@@ -1,0 +1,168 @@
+---
+swagger: "2.0"
+info:
+  description: "Essa API provê o acesso aos usuários do sistema."
+  version: "0.0.1"
+  title: "Lista de Usuários"
+  contact:
+    name: "Caio Câmara"
+    email: "caio.dscamara@gmail.com"
+host: "listadeusuarios.herokuapp.com"
+basePath: "/v1"
+schemes:
+- "https"
+produces:
+- "application/json"
+paths:
+  /users:
+    get:
+      tags:
+      - "Users"
+      summary: "Mostra todos os usuários."
+      description: "Este endpoint retorna **todos os usuários cadastrados no sistema**.\n"
+      parameters: []
+      responses:
+        200:
+          description: "Uma lista de usuários."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        default:
+          description: "Erro inesperado"
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      tags:
+      - "Users"
+      summary: "Cria um usuário."
+      description: "Este endpoint cria um novo usuário no sistema.\n"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Usuário"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        201:
+          description: "Usuário cadastrado com sucesso!"
+          schema:
+            $ref: "#/definitions/User"
+        default:
+          description: "Erro inesperado"
+          schema:
+            $ref: "#/definitions/Error"
+    put:
+      tags:
+      - "Users"
+      summary: "Atualiza um usuário"
+      description: "Este endpoint atualiza um usuário no sistema.\n"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Usuário"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Usuário atualizado com sucesso!"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "Usuário não encontrado. Lembre-se de informar o ID."
+        default:
+          description: "Erro inesperado"
+          schema:
+            $ref: "#/definitions/Error"
+    patch:
+      tags:
+      - "Users"
+      summary: "Atualiza um usuário"
+      description: "Este endpoint atualiza um usuário no sistema.\n"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Usuário"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Usuário atualizado com sucesso!"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "Usuário não encontrado. Lembre-se de informar o ID."
+        default:
+          description: "Erro inesperado"
+          schema:
+            $ref: "#/definitions/Error"
+  /users/{id}:
+    get:
+      tags:
+      - "Users"
+      summary: "Mostra o usuário pelo id informado."
+      description: "Este endpoint retorna **apenas um usuário pelo seu id**.\n"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID do usuário"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Usuário encontrado!"
+          schema:
+            $ref: "#/definitions/User"
+        default:
+          description: "Erro inesperado"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      tags:
+      - "Users"
+      summary: "Apagar um usuário"
+      description: "Este endpoint apagar o usuário a qual foi informado o **id**\n"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID do usuário"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Usuário excluído com sucesso!"
+        404:
+          description: "Usuário não encontrado."
+        410:
+          description: "Esse usuário não existe mais."
+        default:
+          description: "Erro inesperado"
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  User:
+    type: "object"
+    required:
+    - "email"
+    - "name"
+    properties:
+      id:
+        type: "integer"
+        description: "Código do usuário"
+      email:
+        type: "string"
+        description: "Email do usuário"
+      name:
+        type: "string"
+        description: "Nome do usuário"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
